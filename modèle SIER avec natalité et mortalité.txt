@@ -1,0 +1,61 @@
+import matplotlib.pyplot as plt
+
+# Paramètres
+beta = 0.4     # Taux de transmission
+sigma = 0.2    # Taux d'incubation
+gamma = 0.1    # Taux de guérison
+mu = 0.01      # Taux de natalité / mortalité
+N = 1000       # Population initiale (sera presque constante)
+
+# Conditions initiales
+S0 = 990
+E0 = 5
+I0 = 5
+R0 = 0
+
+# Temps de simulation
+T = 160
+dt = 0.1
+n = int(T / dt)
+
+# Initialisation
+S = [S0]
+E = [E0]
+I = [I0]
+R = [R0]
+t = [0]
+
+# Méthode d'Euler
+for k in range(n):
+    Sk, Ek, Ik, Rk = S[-1], E[-1], I[-1], R[-1]
+    N_k = Sk + Ek + Ik + Rk
+
+    dS = mu*N_k - beta * Sk * Ik / N_k - mu * Sk
+    dE = beta * Sk * Ik / N_k - (sigma + mu) * Ek
+    dI = sigma * Ek - (gamma + mu) * Ik
+    dR = gamma * Ik - mu * Rk
+
+    S.append(Sk + dt * dS)
+    E.append(Ek + dt * dE)
+    I.append(Ik + dt * dI)
+    R.append(Rk + dt * dR)
+    t.append(t[-1] + dt)
+
+# Tracé
+plt.figure(figsize=(10, 6))
+plt.plot(t, S, label='S(t)')
+plt.plot(t, E, label='E(t)')
+plt.plot(t, I, label='I(t)')
+plt.plot(t, R, label='R(t)')
+
+# Paramètres en légende
+params_text = f"β = {beta}, σ = {sigma}, γ = {gamma}, μ = {mu}"
+plt.text(0.5, -0.15, params_text, ha='center', va='center', transform=plt.gca().transAxes)
+
+plt.xlabel('Temps')
+plt.ylabel('Population')
+plt.title('Modèle SIER avec naissances et décès (Euler)')
+plt.legend()
+plt.grid()
+plt.tight_layout()
+plt.show()
