@@ -20,7 +20,7 @@ I=[I0]
 R=[R0]
 t=[0]
 
-for lilo in range(n):
+for k in range(n):
  Sk,Ek,Ik,Rk=S[-1],E[-1],I[-1],R[-1]
  N_k=Sk+Ek+Ik+Rk
  dS=mu*N_k-beta*Sk*Ik/N_k-mu*Sk
@@ -41,7 +41,6 @@ plt.plot(t,I,label='I(t)')
 plt.plot(t,R,label='R(t)')
 plt.legend()
 plt.grid()
-plt.tight_layout()
 
 plt.show()
 plt.title('Modèle SIER avec naissances et décès (Euler)')
